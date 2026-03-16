@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistique</title>
+    <style>
+
+        @font-face {
+    font-family: 'designerregular';
+    src: url('font/designer-webfont.woff2') format('woff2'),
+         url('font/designer-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: 'designerregular';
+        }
+
+        .game-over-container {
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 24px;
+        }
+
+
+        .results-btn {
+    padding: 10px 40px;
+    border-radius: 10px;
+    font-family: 'designerregular';
+    text-decoration: none;
+    /* Ici on modifie la couleur et le fond de notre petit bouton */
+    background-color: #3498DB;
+    border-bottom: 5px solid #2980B9;
+    text-shadow: 0px -2px #2980B9;
+    transition: all 0.1s;
+    -webkit-transition: all 0.1s;
+}
+.results-btn:active {
+    transform: translate(0px,5px);
+    -webkit-transform: translate(0px,5px);
+    border-bottom: 1px solid;
+    font-family: 'designerregular';
+}
+
+    </style>
+</head>
+
+<body>
+
+    <div class="game-over-container">
+        <h1>Historique</h1>
+        <p>Votre score :</p>
+        <p><span id="facile">Facile : </span></p>
+        <p><span id="inter">Intermédiaire :</span></p>
+        <p><span id="difficile">Difficile :</span></p>
+<a href="index.html">
+    <button class="results-btn">
+        Menu principal
+    </button>
+</a>
+    </div>
+
+
+</body>
+
+</html>

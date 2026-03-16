@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil - CyberGame</title>
+    <style>
+
+    @font-face {
+    font-family: 'designerregular';
+    src: url('font/designer-webfont.woff2') format('woff2'),
+         url('font/designer-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('body-background.jpg');
+            background-size: cover;
+            font-family: 'designerregular';
+            color: #fff;
+        }
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        h1 {
+            font-size: 3em;
+        }
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CyberGame</h1>
+        <div>        
+            <a href="menu.html" class="btn">New Game</a>       
+        </div>
+        <div>
+            <a href="credit.html" class="btn">Crédit</a>
+        </div>
+    </div>
+</body>
+</html>

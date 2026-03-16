@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu CyberGame</title>
+
+    <style>
+        @font-face {
+            font-family: 'designerregular';
+            src: url('font/designer-webfont.woff2') format('woff2'),
+                url('font/designer-webfont.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            /* Empêche le défilement */
+        }
+
+        .container {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            /* Rectangle prend 100% de la largeur */
+            max-width: 40%;
+            /* Limite la largeur à 20% sur les grands écrans */
+            height: 100%;
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            /* Marge inférieure pour l'image */
+        }
+
+        .image-container {
+            width: 21%;
+            /* Largeur de l'image */
+            height: auto;
+            /* Hauteur automatique */
+        }
+
+        .button {
+            position: absolute;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-color: #007bff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .pause {
+            background-image: url('pause-button.png');
+            top: 10px;
+            left: 10px;
+            width: 50px;
+            height: 50px;
+            opacity: 0.8;
+        }
+
+        .inner-rectangle {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 100%;
+            background-color: #007bff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            display: none;
+        }
+
+        .top-rectangle {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 12%;
+            background-color: #007bff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 0px 0px 10px 10px;
+        }
+
+        .btn {
+            padding: 4% 5%;
+            font-size: large;
+            background-color: #1667bd;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 7%;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .container {
+                max-width: none;
+                /* Supprime la limite de largeur */
+            }
+        }
+
+        .box {
+            margin-right: 5px;
+            margin-left: 5px;
+            font-family: 'designerregular';
+            background-color: #FFFFFF;
+            border-radius: 6px;
+            padding: 10px;
+            text-align: center;
+            font-size: 80%;
+            align-self: center;
+        }
+
+        #qcmAnswers {
+            display: flex;
+            text-align: center;
+
+        }
+
+        .heart-container {
+            position: absolute;
+            right: 0;
+            display: flex;
+            top: 24%;
+            align-items: center;
+            right: 2%;
+            place-content: center;
+        }
+
+        .heart-container img {
+            width: 44px
+        }
+
+        .heart-container p {
+            margin: 0;
+            position: absolute;
+            font-family: 'designerregular';
+            font-size: 28px;
+        }
+
+        #background-video {
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            position: fixed;
+            z-index: -10;
+        }
+
+        #definition {
+            font-family: 'designerregular';
+            font-size: smaller;
+        }
+
+        .btn-pause {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1.4em;
+            color: #fff;
+            background-color: #1b73d0;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .btn-pause:hover {
+            background-color: #0056b3;
+        }
+        #h1-pause {
+            font-family: 'designerregular';
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <video id="background-video" autoplay loop muted poster="star.jpg">
+            <source src="video/video.mp4" type="video/mp4">
+        </video>
+        <div class="top-rectangle">
+            <p id="definition" style="margin-left: 17%;margin-right: 15%; text-align: center;"></p>
+            <div class="heart-container">
+                <img src="heart.png" alt="Coeur">
+                <p id="lifeNumber">1</p>
+            </div>
+        </div>
+        <button onclick="pauseGame()" class="button pause"></button>
+        <div class="inner-rectangle" id="pause">
+            <h1 id="h1-pause" style="padding-top:20%;text-align: center;">GAME PAUSED</h1>
+            <div style="text-align: center;padding-top:45%">
+                <div>
+                    <button onclick="pauseGame()" class="btn-pause">RESUME</button>
+                </div>
+                <div>
+                    <a style="text-decoration-line: none;" href="index.html" class="btn-pause">BACK TO MENU</a>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="mainRectangle">
+        </div>
+
+        <!-- Image en bas -->
+        <div class="image-container">
+            <img style="width:100%" src="spaceship.png" alt="Image">
+        </div>
+    </div>
+</body>
+
+</html>
+
+<script>
+    var game;
+    var gameOver;
+    var qcm_index = 0;
+    var moveTextInterval;
+    var qcm;
+    var write;
+    var repChosen;
+    var textWriten = "";
+    var textElement;
+    var score1 = 0;
+    var score2 = 0;
+    var score3 = 0;
+    var count1 = 0;
+    var count2 = 0;
+    var count3 = 0;
+    var life = 5;
+    var difficulty = 0;
+    var textPosition = 50;
+
+    $(document).ready(function () {
+        const params = new URLSearchParams(window.location.search);
+
+        // Récupérez la valeur d'un paramètre spécifique en utilisant la méthode get()
+        diff = difficulty = parseInt(params.get('difficulty'));
+
+        $('#lifeNumber').text(life);
+        game = true;
+        gameOver = false;
+        startGame();
+    });
+
+    function pauseGame() {
+        if ($('#pause').css('display') == 'none') {
+            // Afficher le rectangle
+            $('#pause').css('display', 'block');
+            game = false;
+            clearInterval(moveTextInterval);
+            moveTextInterval = null;
+        } else {
+            // Masquer le rectangle
+            $('#pause').css('display', 'none');
+            startGame();
+        }
+    }
+
+    function getQcmObject(index, difficulty, game) {
+        switch (difficulty) {
+            case 1:
+                var t = qcm_facile[index];
+                if (t != null && game) count1++;
+                return t;
+                break;
+            case 2:
+                var t = qcm_inter[index];
+                if (t != null && game) count2++;
+                return t;
+                break;
+            case 3:
+                var t = qcm_difficile[index];
+                if (t != null && game) count3++;
+                return t;
+                break;
+            default:
+                console.log("z");
+                return null
+                break;
+        }
+    }
+
+    function endGame(noMoreQuestion) {
+        gameOver = true;
+        window.location.href = "gameOver.html?facile=" + score1 + " / " + count1 + "&inter=" + score2 + " / " + count2 + "&difficile=" + score3 + " / " + count3 + "&end=" + noMoreQuestion;
+    }
+
+    function setQcmAnswers(qcm) {
+        var def = $('.top-rectangle #definition').html(qcm.def);
+
+        var div = document.createElement("div");
+        div.id = "qcmAnswers";
+        div.className = "text qcmAnswers" + qcm_index;
+
+        var div2 = document.createElement("div");
+        div2.id = "rep1";
+        div2.className = "box";
+        div2.innerHTML = qcm.rep1;
+
+        var div3 = document.createElement("div");
+        div3.id = "rep2";
+        div3.className = "box";
+        div3.innerHTML = qcm.rep2;
+
+        var div4 = document.createElement("div");
+        div4.id = "rep3";
+        div4.className = "box";
+        div4.innerHTML = qcm.rep3;
+
+        var div5 = document.createElement("div");
+        div5.id = "rep4";
+        div5.className = "box";
+        div5.innerHTML = qcm.rep4;
+
+        div.append(div2);
+        div.append(div3);
+        div.append(div4);
+        div.append(div5);
+
+        let children = Array.from(div.children);
+
+        // Appliquer l'algorithme de Fisher-Yates pour mélanger la liste des enfants
+        for (let i = children.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [children[i], children[j]] = [children[j], children[i]];
+        }
+
+        // Ajouter les enfants mélangés dans l'ordre au parent
+        children.forEach(child => {
+            div.appendChild(child);
+        });
+
+        $('#mainRectangle').html(div)
+
+        console.log("e");
+    }
+
+    function startGame() {
+        if (!gameOver) {
+            qcm = getQcmObject(qcm_index, difficulty, game);
+            if (qcm != null) {
+                setQcmAnswers(qcm);
+                if(game) textPosition = 50;
+                else game = true;
+                var imageContainer = $(".image-container");
+                var imagePosition = imageContainer.offset().top;
+                textElement = $('.qcmAnswers' + qcm_index);
+                textElement.css('padding-top', textPosition + "px");
+                if (!moveTextInterval) {
+
+                    moveTextInterval = setInterval(function () {
+                        textPosition += 1;
+                        textElement.css('padding-top', textPosition + "px");
+                        if (textPosition + textElement.height() >= imagePosition) {
+                            life--;
+                            $('#lifeNumber').text(life);
+                            textWriten = "";
+                            repChosen = 0;
+                            clearInterval(moveTextInterval);
+                            moveTextInterval = null;
+                            if (life == 0) endGame();
+                            else {
+                                qcm_index++;
+                                startGame();
+                            }
+                        }
+                    }, 35);
+                }
+            }
+            else {
+                difficulty++;
+                qcm_index = 0;
+                console.log(difficulty);
+                if (difficulty > 3) endGame(true);
+                startGame();
+            }
+        }
+    }
+
+    function setColor(index) {
+        var end = $('#rep' + index).text().substring($('#rep' + index).text().toLowerCase().indexOf(textWriten) + textWriten.length);
+        $("#rep" + index).text(textWriten).css("color", "red").append('<span style="color: black;">' + end + '</span>');
+    }
+
+    document.body.addEventListener("keydown", function (event) {
+        // Récupérez la touche saisie par l'utilisateur
+        var keyPressed = event.key;
+        if (!gameOver) {
+            if (keyPressed == "Backspace") {
+                textWriten = textWriten.slice(0, -1);
+                setColor(repChosen);
+            }
+            var isAlpha = false;
+            if (/^[0-9-a-zA-ZÀ-ÿ'\/\s]$/.test(keyPressed)) isAlpha = true;
+            if (textWriten == "") repChosen = 0;
+            if (isAlpha) {
+                textWriten += keyPressed.toLowerCase();
+                console.log(textWriten);
+                switch (repChosen) {
+                    case 1:
+                        if (!qcm.rep1.toLowerCase().startsWith(textWriten)) {
+                            textWriten = textWriten.slice(0, -1);
+                        }
+                        else {
+                            setColor(1);
+                        }
+                        if (qcm.rep1.toLowerCase() == textWriten) {
+                            console.log("gagné !")
+                            switch (difficulty) {
+                                case 1:
+                                    score1++;
+                                    break;
+                                case 2:
+                                    score2++;
+                                    break;
+                                case 3:
+                                    score3++;
+                                    break;
+                            }
+                            textWriten = "";
+                            repChosen = 0;
+                            clearInterval(moveTextInterval);
+                            moveTextInterval = null;
+                            qcm_index++;
+                            startGame();
+                        }
+                        break;
+                    case 2:
+                        if (!qcm.rep2.toLowerCase().startsWith(textWriten)) {
+                            textWriten = textWriten.slice(0, -1);
+                        }
+                        else {
+                            setColor(2);
+                        }
+                        if (qcm.rep2.toLowerCase() == textWriten) {
+                            $('#rep2').remove();
+                            life--;
+                            $('#lifeNumber').text(life);
+                            if(life == 0) endGame();
+                            textWriten = "";
+                            repChosen = 0;
+                        }
+                        break;
+                    case 3:
+                        if (!qcm.rep3.toLowerCase().startsWith(textWriten)) {
+                            textWriten = textWriten.slice(0, -1);
+                        }
+                        else {
+                            setColor(3);
+                        }
+                        if (qcm.rep3.toLowerCase() == textWriten) {
+                            $('#rep3').remove();
+                            life--;
+                            $('#lifeNumber').text(life);
+                            if(life == 0) endGame();
+                            textWriten = "";
+                            repChosen = 0;
+                        }
+                        break;
+                    case 4:
+                        if (!qcm.rep4.toLowerCase().startsWith(textWriten)) {
+                            textWriten = textWriten.slice(0, -1);
+                        }
+                        else {
+                            setColor(4);
+                        }
+                        if (qcm.rep4.toLowerCase() == textWriten) {
+                            $('#rep4').remove();
+                            life--;
+                            $('#lifeNumber').text(life);
+                            if(life == 0) endGame();
+                            textWriten = "";
+                            repChosen = 0;
+                        }
+                        break;
+                    default:
+                        if (qcm.rep1[0].toLowerCase() == keyPressed.toLowerCase()) repChosen = 1, setColor(1);
+                        else if (qcm.rep2[0].toLowerCase() == keyPressed.toLowerCase()) repChosen = 2, setColor(2);
+                        else if (qcm.rep3[0].toLowerCase() == keyPressed.toLowerCase()) repChosen = 3, setColor(3);
+                        else if (qcm.rep4[0].toLowerCase() == keyPressed.toLowerCase()) repChosen = 4, setColor(4);
+                        else textWriten = "";
+                }
+            }
+            console.log(textWriten)
+        }
+    });
+
+    /*let qcm_facile = [
+        {
+            def: "Quel type de logiciel infecte une machine, verrouille les fichiers, puis demande de l'argent ?",
+            rep1: "Rançongiciel",
+            rep2: "Cheval de troie",
+            rep3: "Ver",
+            rep4: "Pirate de navigateur",
+            diff: 1
+        },
+    ]
+    let qcm_inter = [
+        {
+            def: "Quel type d'attaque vise à rendre un service indisponible en saturant le réseau de requêtes ?",
+            rep1: "DDoS",
+            rep2: "Phishing",
+            rep3: "Spoofing",
+            rep4: "Ransomware",
+            diff: 2
+        },
+    ]
+    let qcm_difficile = [
+        {
+            def: "Quel est le terme désignant le processus de dissimulation des données dans une image ou un fichier audio ?",
+            rep1: "Stéganographie",
+            rep2: "Cryptographie",
+            rep3: "Glyptographie",
+            rep4: "Encodage",
+            diff: 3
+        },
+    ]*/
+
+    let qcm_facile = [
+        {
+            def: "Quel type de logiciel infecte une machine, verrouille les fichiers, puis demande de l'argent ?",
+            rep1: "Rançongiciel",
+            rep2: "Cheval de troie",
+            rep3: "Ver",
+            rep4: "Pirate de navigateur",
+            diff: 1
+        },
+        {
+            def: "Quel type d'attaque vise à rendre un service indisponible en saturant le réseau de requêtes ?",
+            rep1: "DDoS",
+            rep2: "Phishing",
+            rep3: "Spoofing",
+            rep4: "Ransomware",
+            diff: 1
+        },
+        {
+            def: "Quel type d'attaque consiste à envoyer des courriels frauduleux pour obtenir des informations confidentielles ?",
+            rep1: "Phishing",
+            rep2: "Spoofing",
+            rep3: "Malware",
+            rep4: "DDoS",
+            diff: 1
+        },
+        {
+            def: "Quel est le terme désignant le processus de dissimulation des données dans une image ou un fichier audio ?",
+            rep1: "Stéganographie",
+            rep2: "Cryptographie",
+            rep3: "Glyptographie",
+            rep4: "Encodage",
+            diff: 1
+        },
+        {
+            def: "Je suis à la fois la clé et le gardien de vos données personnelles. Plus je suis complexe, mieux c'est. Que suis-je ?",
+            rep1: "Mot de passe",
+            rep2: "Firewall",
+            rep3: "Cryptage",
+            rep4: "Empreinte digitale",
+            diff: 1
+        },
+        {
+            def: "Quel est le numéro de port pour HTTPS (HTTP Secure)?",
+            rep1: "443",
+            rep2: "22",
+            rep3: "80",
+            rep4: "991",
+            diff: 1
+        },
+        {
+            def: "Quel protocole sécurisé est souvent utilisé pour les connexions à distance?",
+            rep1: "SSH",
+            rep2: "VPN",
+            rep3: "UDP",
+            rep4: "HTTP",
+            diff: 1
+        },
+        {
+            def: "Quel protocole de communication sécurisée est souvent utilisé pour chiffrer les données lorsqu’elles sont envoyées entre un navigateur web et un site web sécurisé ?",
+            rep1: "HTTPS",
+            rep2: "FTP",
+            rep3: "TCP/IP",
+            rep4: "SMTP",
+            diff: 1
+        }
+    ];
+
+    let qcm_inter = [
+        {
+            def: "Quel dispositif permet de contrôler l'accès à un réseau en vérifiant l'identité des utilisateurs ?",
+            rep1: "Pare-feu",
+            rep2: "Routeur",
+            rep3: "Switch",
+            rep4: "Modem",
+            diff: 2
+        },
+        {
+            def: "Quel terme décrit une attaque où un cybercriminel intercepte la communication entre deux parties sans que celles-ci ne s'en rendent compte ?",
+            rep1: "Man-in-the-Middle",
+            rep2: "Attaque par déni de service",
+            rep3: "Interception de données",
+            rep4: "Hameçonnage",
+            diff: 2
+        },
+        {
+            def: "Quel type de logiciel malveillant est conçu pour enregistrer discrètement les frappes d'un utilisateur, y compris les mots de passe ?",
+            rep1: "Keylogger",
+            rep2: "Virus",
+            rep3: "Worm",
+            rep4: "Cheval de Troie",
+            diff: 2
+        },
+        {
+            def: "Quel protocole d'authentification peut être sécurisé à l'aide du protocole SSL ?",
+            rep1: "LDAP",
+            rep2: "Kerberos",
+            rep3: "TACACS+",
+            rep4: "Radius",
+            diff: 2
+        },
+        {
+            def: "Découper un réseau Ethernet en deux parties égales avec un bridge (pont) permet de ?",
+            rep1: "Améliorer le débit",
+            rep2: "Réduire le débit",
+            rep3: "Diviser la bande passante",
+            rep4: "Laisser inchangé le débit",
+            diff: 2
+        },
+        {
+            def: "Quelle action devriez-vous éviter de faire en ligne pour protéger votre vie privée ?",
+            rep1: "Cliquer sur des liens suspects",
+            rep2: "Partager votre mot de passe avec des amis",
+            rep3: "Utiliser un mot de passe fort",
+            rep4: "Mettre à jour régulièrement vos logiciels",
+            diff: 2
+        },
+        {
+            def: "De combien de caractères est composé un mot de passe fort ?",
+            rep1: "12 caractères",
+            rep2: "4 caractères",
+            rep3: "6 caractères",
+            rep4: "8 caractères",
+            diff: 2
+        },
+        {
+            def: "Que devez-vous faire pour protéger votre ordinateur contre les logiciels malveillants ?",
+            rep1: "Installer un logiciel antivirus",
+            rep2: "Ouvrir des e-mails d'expéditeurs inconnus",
+            rep3: "Partager votre mot de passe",
+            rep4: "Brancher sa souris",
+            diff: 2
+        },
+        {
+            def: "Lequel des mots de passe suivants est le plus sûr ?",
+            rep1: "Bi%DuIn!So57Lo",
+            rep2: "123456",
+            rep3: "dragon",
+            rep4: "iLoVeYou",
+            diff: 2
+        },
+        {
+            def: "___ est un exemple d’algorithme de clé publique.",
+            rep1: "RSA",
+            rep2: "DES",
+            rep3: "IREA",
+            rep4: "WEP",
+            diff: 2
+        },
+        {
+            def: "Je suis capable d'auto-réplication, de propagation sur les réseaux et d'auto-exécution qui suis-je ?",
+            rep1: "Ver",
+            rep2: "SHA-256",
+            rep3: "MD5",
+            rep4: "Firewall",
+            diff: 2
+        }
+    ];
+
+    let qcm_difficile = [
+        {
+            def: "La signature DSS utilise quel algorithme de hachage?",
+            rep1: "SHA-1",
+            rep2: "MD5",
+            rep3: "CHA-2",
+            rep4: "N’utilise pas d’algorithme de hachage",
+            diff: 3
+        },
+        {
+            def: "Quelle forme de virus est explicitement conçue pour éviter la détection par des logiciels antivirus.",
+            rep1: "Furtif",
+            rep2: "Polymorphe",
+            rep3: "Parasite",
+            rep4: "Macro",
+            diff: 3
+        },
+        {
+            def: "Nombre de tours dans l’algorithme DES(Data Encryption Standard) est ?",
+            rep1: "4 tours",
+            rep2: "8 tours",
+            rep3: "12 tours",
+            rep4: "16 tours",
+            diff: 3
+        },
+        {
+            def: "Le message de certificat est requis pour toute méthode d’échange de clé convenue, sauf __.",
+            rep1: "Anonymous Diffie-Hellman",
+            rep2: "Ephemeral Diffie-Hellman",
+            rep3: "Fixed Diffie-Hellman",
+            rep4: "RSA",
+            diff: 3
+        },
+        {
+            def: "Quelle atteinte aux données est encourue par l’écoute passive des transmissions ?",
+            rep1: "Confidentialité",
+            rep2: "Disponibilité",
+            rep3: "Intégrité",
+            rep4: "Authenticité",
+            diff: 3
+        },
+        {
+            def: "Un utilisateur se plaint d'une connexion Internet lente. Il vérifie l'interface externe du routeur en remarquant plusieurs connexions semi-ouvertes. Quel type d'attaque cela décrit-il ?",
+            rep1: "SYN flooding",
+            rep2: "Attaque DDOS",
+            rep3: "Phishing",
+            rep4: "TCP Hijacking",
+            diff: 3
+        }
+    ];
+</script>

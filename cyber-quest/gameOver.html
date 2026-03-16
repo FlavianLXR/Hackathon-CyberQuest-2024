@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Over</title>
+    <style>
+
+        @font-face {
+    font-family: 'designerregular';
+    src: url('font/designer-webfont.woff2') format('woff2'),
+         url('font/designer-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: 'designerregular';
+        }
+
+        .game-over-container {
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 24px;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="game-over-container">
+        <h1><span id="end"></span></h2>
+        <p><span id="score">Votre score : </span></p>
+        <p><span id="facile">Facile : </span></p>
+        <p><span id="inter">Intermédiaire :</span></p>
+        <p><span id="difficile">Difficile :</span></p>
+        <button class="btn" onclick="rejouer()">Rejouer</button>
+    </div>
+
+    <script>
+        var facile, inter, difficile;
+        $(document).ready(function () {
+            const params = new URLSearchParams(window.location.search);
+
+            // Récupérez la valeur d'un paramètre spécifique en utilisant la méthode get()
+            const facile = params.get('facile');
+            const inter = params.get('inter');
+            const difficile = params.get('difficile');
+            $('#facile').text("Facile : " + facile);
+            $('#inter').text("Intermédiaire : " + inter);
+            $('#difficile').text("Difficile : " + difficile);
+            var count = parseInt(facile.split('/')[0])+parseInt(inter.split('/')[0])+parseInt(difficile.split('/')[0]);
+            $('#score').text("Votre score : " + count + " bonnes réponses");
+            const end = params.get('end');
+            if(end == "true") $('#end').text("Vous avez fini toutes les questions !").css("color", "green");
+            else $('#end').text("Game Over !").css("color", "red");
+
+        });
+        // Fonction pour rejouer
+        function rejouer() {
+            // Rediriger vers la page de jeu ou autre action
+            window.location.href = "menu.html";
+        }
+    </script>
+
+</body>
+
+</html>

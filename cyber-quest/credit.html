@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit</title>
+    <style>
+
+        @font-face {
+    font-family: 'designerregular';
+    src: url('font/designer-webfont.woff2') format('woff2'),
+         url('font/designer-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+
+        .container {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            /* Rectangle prend 100% de la largeur */
+            max-width: 40%;
+            /* Limite la largeur à 20% sur les grands écrans */
+            height: 100%;
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            /* Marge inférieure pour l'image */
+        }
+
+        #background-video {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  position: fixed;
+  z-index: -10;
+}
+
+.results-btn {
+    padding: 10px 40px;
+    border-radius: 10px;
+    font-family: 'designerregular';
+    text-decoration: none;
+    /* Ici on modifie la couleur et le fond de notre petit bouton */
+    background-color: #3498DB;
+    border-bottom: 5px solid #2980B9;
+    text-shadow: 0px -2px #2980B9;
+    transition: all 0.1s;
+    -webkit-transition: all 0.1s;
+}
+.results-btn:active {
+    transform: translate(0px,5px);
+    -webkit-transform: translate(0px,5px);
+    border-bottom: 1px solid;
+    font-family: 'designerregular';
+}
+    </style>
+</head>
+
+<body>
+
+ <div class="container">
+            <video id="background-video" autoplay muted poster="Fincredit.png">
+                <source src="video/credit.mp4" type="video/mp4">
+            </video>
+
+            <a href="index.html">
+    <button class="results-btn">
+        Quitter
+    </button>
+</a>
+ </div>
+
+
+</body>
+
+</html>
